@@ -1,0 +1,4 @@
+---
+# defaults file for kubectl-installation
+region_name: us-east-2
+cluster_name: dev-eks

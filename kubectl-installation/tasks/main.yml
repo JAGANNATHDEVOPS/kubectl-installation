@@ -1,0 +1,27 @@
+---
+# tasks file for kubectl-installation
+# tasks file for install-aws-cli
+- name: Download a file
+  get_url:
+    url: "https://storage.googleapis.com/kubernetes-release/release/v1.23.6/bin/linux/amd64/kubectl"
+    dest: "/home/ubuntu"
+- name: Give executable permission to kubectl
+  shell:
+    cmd:  chmod +x /home/ubuntu/kubectl
+- name: Move kubectl to /usr/loca/bin
+  shell:
+    cmd:  mv /home/ubuntu/kubectl /usr/local/bin/kubectl
+- name: get the kubeconfig file
+  shell:
+    cmd: aws eks update-kubeconfig --region '{{ region_name }}' --name '{{ cluster_name}}'
+    chdir: /home/ubuntu/
+- name: imove get the kubeconfig file
+  shell:
+    cmd: cp -r /root/.kube /home/ubuntu/
+- name: Recursively change ownership of a directory
+  file:
+    path: /home/ubuntu/.kube
+    state: directory
+    recurse: yes
+    owner: ubuntu
+    group: ubuntu
